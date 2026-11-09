@@ -9,9 +9,8 @@ Vérifications réalisées le 9 novembre 2026 sur l'émulateur Medium Phone API 
 | `./gradlew assembleDebug` | Réussi |
 | `./gradlew testDebugUnitTest` | 2 tests réussis : saisies et calcul des jours civils |
 | `./gradlew lintDebug` | Réussi, aucune erreur ; avertissements de versions et de compatibilité documentés par le rapport Lint |
-| `./gradlew connectedDebugAndroidTest` | 3 tests réussis : migration v1→v2, persistance et outbox après perte de confirmation |
+| Suite instrumentée complète via `adb shell am instrument -w …AndroidJUnitRunner` sur la version Firebase | 5 tests réussis : migration v1→v2, persistance, outbox après perte de confirmation, absence de permissions publicitaires et collecte/suivi automatique désactivés par défaut |
 | `cd server && npm test` | 5 tests réussis : persistance/isolation, rejeu, conflit concurrent, suppression, validation |
-| Tests instrumentés `AnalyticsManifestTest` sur l'APK installé | 2 tests réussis : absence de permissions publicitaires, collecte et suivi automatique désactivés par défaut |
 
 Le test de migration crée le schéma local v1, y insère un aliment, puis ouvre cette même base avec Room v2 et la migration. Il vérifie l'aliment conservé et la table d'outbox utilisable.
 
@@ -28,22 +27,24 @@ Le test de migration crée le schéma local v1, y insère un aliment, puis ouvre
 | Réception de partage | Intent `ACTION_SEND text/plain` : le texte partagé préremplit le formulaire |
 | Photo | Capture réelle dans la caméra de l'émulateur, retour réussi et JPEG compressé présent dans les fichiers privés après correction |
 | Photo synchronisée | Aliment « Pommes » reçu par le serveur avec photo JPEG et version 1 |
-| Routage HTTPS | Intent explicite `/foods/<UUID>` ouvrant le bon détail ; cette vérification ne prouve pas l'association du domaine |
+| Routage HTTPS | Lien implicite `https://videfrigo-2dbca.web.app/foods/<UUID>` ouvrant le bon détail, sans cibler le package |
 | Mise à jour de l'APK | Installation avec `adb install -r` de la nouvelle version ; les deux aliments et la photo restent présents |
 | Rappel local | Autorisation accordée, rappels activés ; notification « À consommer bientôt » affichée avec les deux aliments à vérifier |
-| Routage après mort du processus | Intent explicite avec les paramètres du PendingIntent de notification, après `am kill` : bon détail ouvert. Le test de réception FCM reste à faire |
+| Routage après mort du processus | Intent explicite avec les paramètres du PendingIntent de notification, après `am kill` : bon détail ouvert |
+| FCM réel | Message technique envoyé via l'API officielle FCM HTTP v1 vers cette installation d'émulateur après `am kill` ; notification reçue et clic ouvrant le frigo. Le message ne contient aucun nom ni identifiant d'aliment |
+| Analytics en direct | `first_food_added`, `reminder_opened`, `widget_food_opened` visibles dans Firebase DebugView ; paramètre d'écran `food_detail` vérifié dans la console |
+| Consentement | Mesure désactivée avant accord ; après retrait, le SDK confirme `analytics_storage=denied` et `app measurement enabled=false`. Consentement laissé désactivé en fin de test |
+| App Link | JSON HTTPS 200 publié sur Firebase Hosting ; `pm get-app-links` indique `videfrigo-2dbca.web.app: verified` |
 
-## Vérifications externes restant à terminer
+## Configuration et préparation de la démo
 
-Le suivi manuel des quatre écrans Compose est implémenté avec des noms stables (`fridge_list`, `food_form`, `food_detail`, `settings`) et le suivi automatique est désactivé. Les permissions publicitaires ont été retirées explicitement du manifest fusionné. Compilation, tests unitaires et Lint repassés après ces modifications. La validation en direct dépend encore de Firebase.
+Firebase Analytics, FCM et Firebase Hosting utilisent le projet `videfrigo-2dbca`. L'application Android y est enregistrée et son fichier `google-services.json` est présent localement, hors Git. Les quatre écrans Compose ont des noms stables (`fridge_list`, `food_form`, `food_detail`, `settings`) et le suivi automatique est désactivé. Les permissions publicitaires sont absentes du manifest final.
 
-- **FCM** : ajouter le `google-services.json` personnel, installer la version Firebase, puis recevoir un message de test app en arrière-plan et vérifier son clic.
-- **Analytics** : après configuration Firebase et consentement, observer les trois événements dans DebugView. Le code de collecte est présent, mais un événement visible sur un vrai projet n'est pas encore vérifié.
-- **App Link verified** : publier l'entrée de signature fournie sur le domaine HTTPS, puis contrôler `pm get-app-links`. L'état observé avant publication est `1024`, et non `verified`. La déclaration du manifest et le routage ne suffisent pas à valider cette étape.
-  Le tableau complet à publier est dans `docs/assetlinks.json`. La création d'un brouillon Netlify a été refusée par la revue automatique d'autorisation ; aucun déploiement n'a été créé. Voir `APP-LINK-DEPLOIEMENT.md` pour le changement précis en attente d'accord.
-- **Release** : la clé release personnelle et une API HTTPS doivent être configurées avant une livraison release. La debug de démonstration est signée avec la clé debug locale ; elle n'est pas présentée comme une release.
+La [capture DebugView](captures/analytics-debugview.png) montre les trois événements et le nom d'écran transmis. La [capture du détail](captures/app-link-detail.png) accompagne le test du lien HTTPS implicite. Le mode de diagnostic Firebase et les logs verbeux ont été désactivés après les essais.
 
-La checklist du TP n'est donc pas annoncée intégralement validée tant que les étapes externes ne sont pas exécutées.
+Pour la présentation, refaire l'envoi du message de test depuis la console Firebase avec le jeton de l'appareil utilisé, puis répéter le parcours du README. Les essais ont été faits sur émulateur ; il reste à répéter la démo sur le support retenu et à savoir expliquer les choix du code.
+
+La signature release détaillée est un bonus du sujet : une clé release personnelle et une API HTTPS sont nécessaires seulement pour cette livraison supplémentaire. L'APK fourni pour la démo est une debug signée, avec API locale reliée par ADB ; il n'est pas présenté comme une release. Aucun envoi sur le Play Store n'a été effectué ou requis pour ces vérifications.
 
 ## Difficulté rencontrée
 

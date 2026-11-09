@@ -1,6 +1,6 @@
 # Copier vers local.properties et adapter le chemin du SDK.
 sdk.dir=/chemin/vers/Android/sdk
-PWA_HOST=vide-frigo-mathieu-tp.netlify.app
+PWA_HOST=videfrigo-2dbca.web.app
 # Démo par USB : démarrer server/ puis adb reverse tcp:8787 tcp:8787.
 SYNC_BASE_URL=http://127.0.0.1:8787/
 # Pour une livraison installable hors USB, utiliser une API publique HTTPS.

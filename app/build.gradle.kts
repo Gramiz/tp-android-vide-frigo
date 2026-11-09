@@ -14,7 +14,7 @@ val props = Properties().apply {
     rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
 }
 fun prop(name: String, default: String = "") = props.getProperty(name, default)
-val host = prop("PWA_HOST", "vide-frigo-mathieu-tp.netlify.app")
+val host = prop("PWA_HOST", "videfrigo-2dbca.web.app")
 val apiUrl = prop("SYNC_BASE_URL", "http://127.0.0.1:8787/")
 
 android {
@@ -24,8 +24,8 @@ android {
         applicationId = "fr.mathieu.videfrigo"
         minSdk = 26
         targetSdk = 37
-        versionCode = 2
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.0.1"
         buildConfigField("String", "SYNC_BASE_URL", "\"$apiUrl\"")
         buildConfigField("String", "PWA_HOST", "\"$host\"")
         buildConfigField("boolean", "FIREBASE_CONFIGURED", firebaseConfigured.toString())

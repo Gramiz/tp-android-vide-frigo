@@ -1,11 +1,19 @@
-# Publication App Link à autoriser
+# App Link sur Firebase Hosting
 
-Domaine : `https://vide-frigo-mathieu-tp.netlify.app`.
+Projet Firebase : `videfrigo-2dbca`. Domaine : `https://videfrigo-2dbca.web.app`.
 
-Le fichier [assetlinks.json](assetlinks.json) est le tableau complet préparé : les associations TWA et Carnet déjà publiées sont conservées, et l'association `fr.mathieu.videfrigo` est ajoutée avec l'empreinte réelle de l'APK debug.
+Le fichier publié et versionné est [hosting/public/.well-known/assetlinks.json](../hosting/public/.well-known/assetlinks.json). Il associe le domaine à `fr.mathieu.videfrigo` et à l'empreinte SHA-256 réelle de l'APK debug construit sur cette machine.
 
-La procédure préparée crée d'abord un déploiement Netlify de prévisualisation avec les 18 fichiers existants. **Seul `/.well-known/assetlinks.json` change** ; les 17 autres fichiers restent référencés par leur SHA existant. Les fonctions `foods`, `push` et `reminders` sont également conservées par leur empreinte existante, ainsi que la planification `0 8 * * *`.
+Le site Firebase ne contenait aucune release avant cette publication. La configuration Hosting ne publie que ce fichier. Elle sert le JSON avec le bon type MIME et autorise explicitement `.well-known`, que les réglages Firebase par défaut pourraient ignorer. L'association automatique Firebase est désactivée car le fichier est géré manuellement.
 
-Avant toute publication, comparer le brouillon au déploiement actuel : un seul fichier changé, mêmes fonctions et même planification. Vérifier ensuite la réponse HTTPS du fichier et la présence des trois associations. Publier seulement si ces contrôles passent, puis demander à Android une nouvelle vérification et contrôler l'état `verified`.
+Sans l'application installée, les liens d'accueil et `/foods/**` redirigent le navigateur vers la PWA de référence. L'adresse Netlify de cette PWA n'est pas modifiée ; les App Links de cette application Android utilisent le domaine Firebase.
 
-La revue automatique d'autorisation a refusé la création du brouillon, faute d'accord explicite sur ce déploiement externe et son domaine. Aucun déploiement n'a été créé par cette tentative. Le fichier est prêt ; la publication reste en attente d'autorisation.
+```bash
+firebase deploy --only hosting --project videfrigo-2dbca
+adb shell pm verify-app-links --re-verify fr.mathieu.videfrigo
+adb shell pm get-app-links fr.mathieu.videfrigo
+```
+
+Validation effectuée le 9 novembre 2026 : réponse HTTPS 200, JSON identique au fichier versionné et état Android **verified** pour `videfrigo-2dbca.web.app`. Un lien HTTPS implicite `/foods/<UUID>` ouvre le bon détail, sans cibler le package avec ADB.
+
+Une signature release différente nécessite d'ajouter son empreinte au même fichier, puis de republier. Aucun déploiement Netlify n'a été effectué.

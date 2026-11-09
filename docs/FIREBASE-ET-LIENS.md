@@ -2,6 +2,8 @@
 
 ## Firebase personnel
 
+Configuration de ce rendu : projet `videfrigo-2dbca`, application Android `fr.mathieu.videfrigo`, propriété Google Analytics déjà associée. Le `google-services.json` correspondant est présent localement et ignoré par Git.
+
 1. Dans Firebase Console, créer ou ouvrir son projet, activer Google Analytics et enregistrer une application Android avec le package **fr.mathieu.videfrigo**.
 2. Télécharger `google-services.json` et le placer dans `app/google-services.json`. Ce fichier est ignoré par Git ; ne pas utiliser celui de Carnet, dont le package est différent.
 3. Recompiler avec `./gradlew assembleDebug` et installer la nouvelle version **sans désinstaller**.
@@ -60,7 +62,7 @@ Les permissions publicitaires `AD_ID` et `ACCESS_ADSERVICES_*` sont explicitemen
 
 ## Association du domaine
 
-Le manifest utilise `PWA_HOST` de `local.properties`. Le domaine par défaut est celui de la PWA de référence ; **sa présence dans le manifest ne signifie pas que l'association est publiée ou vérifiée**.
+Le manifest utilise `PWA_HOST` de `local.properties`. Le domaine choisi est **videfrigo-2dbca.web.app**, hébergé par Firebase Hosting. L'association a été publiée et Android a confirmé `verified` le 9 novembre 2026. La variable conserve son nom du cours ; elle désigne ici le domaine des liens Android, distinct du site Netlify de référence.
 
 1. Obtenir l'empreinte de l'APK réellement installé :
 
@@ -83,7 +85,7 @@ Le manifest utilise `PWA_HOST` de `local.properties`. Le domaine par défaut est
 ```
 
 3. Le fichier complet est un tableau JSON, servi en HTTPS sans redirection. Déclarer les empreintes debug et release si ces deux signatures sont utilisées.
-   `assetlinks-entry.json`, dans ce dossier, contient l'entrée exacte pour l'APK debug construit sur cette machine. L'ajouter au tableau du domaine ; ce fichier d'entrée seul ne remplace pas le tableau complet.
+   `assetlinks-entry.json`, dans ce dossier, contient l'entrée exacte pour l'APK debug construit sur cette machine. Le tableau complet publié est dans `hosting/public/.well-known/assetlinks.json`.
 4. Refaire la vérification :
 
 ```bash

@@ -8,4 +8,6 @@ local.properties
 app/google-services.json
 server/.data/
 .DS_Store
-captures/
+/captures/
+.firebase/
+firebase-debug.log*

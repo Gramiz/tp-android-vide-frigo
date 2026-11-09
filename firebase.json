@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "public": "hosting/public",
+    "ignore": ["firebase.json", "**/node_modules/**"],
+    "appAssociation": "NONE",
+    "headers": [
+      {
+        "source": "/.well-known/assetlinks.json",
+        "headers": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Cache-Control", "value": "public, max-age=300" }
+        ]
+      }
+    ],
+    "redirects": [
+      { "source": "/", "destination": "https://vide-frigo-mathieu-tp.netlify.app/", "type": 302 },
+      { "source": "/foods/**", "destination": "https://vide-frigo-mathieu-tp.netlify.app/", "type": 302 }
+    ]
+  }
+}

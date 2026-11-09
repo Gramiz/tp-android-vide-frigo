@@ -1,0 +1,5 @@
+  fr.mathieu.videfrigo:
+    ID: f5baccb9-dcf3-42c1-aac1-51ca20a3ec79
+    Signatures: [EF:F5:FF:43:02:86:2B:27:70:F1:DE:56:32:22:DC:A6:1A:19:94:0B:69:0E:FD:23:04:D4:CE:50:78:97:81:E4]
+    Domain verification state:
+      videfrigo-2dbca.web.app: verified

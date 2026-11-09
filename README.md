@@ -43,6 +43,14 @@ Placer le fichier de son projet personnel dans `app/google-services.json`, puis 
 
 La procédure complète, les trois événements et l'association de domaine figurent dans [docs/FIREBASE-ET-LIENS.md](docs/FIREBASE-ET-LIENS.md).
 
+Le projet Firebase utilisé est `videfrigo-2dbca`, avec Analytics et FCM. L'application Android `fr.mathieu.videfrigo` y est enregistrée. Le fichier personnel a été récupéré localement et reste hors Git. Le propriétaire du projet peut le télécharger à nouveau :
+
+```bash
+firebase apps:sdkconfig ANDROID 1:392297106216:android:35dce8171cab4c06bdde1d --project videfrigo-2dbca --out app/google-services.json
+```
+
+L'association App Link est publiée sur Firebase Hosting : `https://videfrigo-2dbca.web.app/.well-known/assetlinks.json`. Android confirme `verified`. Voir [la procédure Hosting](docs/APP-LINK-DEPLOIEMENT.md). L'API de synchronisation reste le serveur Node local décrit plus haut ; Firebase Hosting sert l'association de domaine.
+
 ## Architecture et choix à expliquer
 
 ```text
@@ -88,9 +96,9 @@ Les rappels locaux sont vérifiés périodiquement après 8 h, au plus une fois 
 cd server && npm test
 ```
 
-Les tests instrumentés vérifient la migration sans perte, la persistance Room et la séquence ajout/modification/suppression avec perte simulée de confirmation réseau. Les tests API vérifient persistance, isolation, rejeu idempotent, conflits concurrents, tombstones et validation des entrées.
+Les tests instrumentés vérifient la migration sans perte, la persistance Room, la séquence ajout/modification/suppression avec perte simulée de confirmation réseau et les protections du manifest analytics. Les tests API vérifient persistance, isolation, rejeu idempotent, conflits concurrents, tombstones et validation des entrées.
 
-Les manipulations et le statut des exigences sont consignés dans [docs/VALIDATION.md](docs/VALIDATION.md). Les éléments dépendant d'un accès externe y restent marqués à vérifier.
+Les manipulations et le statut des exigences sont consignés dans [docs/VALIDATION.md](docs/VALIDATION.md). Les trois événements ont été observés dans DebugView, un vrai message FCM a été reçu app en arrière-plan et le domaine Firebase est vérifié par Android.
 
 ## Démonstration
 
@@ -114,4 +122,4 @@ keytool -genkeypair -keystore .secrets/release.jks -alias videfrigo -keyalg RSA 
 
 Renseigner les propriétés `RELEASE_*` et l'URL HTTPS dans `local.properties`, puis lancer `./gradlew assembleRelease`. Garder la clé et les mots de passe dans un emplacement privé sauvegardé. Une nouvelle livraison utilise la même clé et un `versionCode` supérieur. Les données survivent à une mise à jour, mais une désinstallation les efface. Une debug et une release signées différemment ne se mettent pas à jour l'une par-dessus l'autre.
 
-Le dépôt ne contient ni clé de signature, ni mots de passe, ni jetons, ni données de frigo, ni configuration Firebase personnelle.
+Le dépôt ne contient ni clé de signature, ni mots de passe, ni jetons, ni base de données de frigo, ni `google-services.json`. Les identifiants publics de projet et la configuration Hosting sont versionnés pour permettre de comprendre et reproduire le déploiement.
