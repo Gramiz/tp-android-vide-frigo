@@ -11,3 +11,7 @@ server/.data/
 /captures/
 .firebase/
 firebase-debug.log*
+
+# Documentation personnelle de préparation : conservée uniquement en local.
+/DOC-TECHNIQUE.md
+/GUIDE-ORAL.md
