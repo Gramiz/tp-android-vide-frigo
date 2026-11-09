@@ -44,6 +44,7 @@ class FridgeViewModel(private val saved: SavedStateHandle, private val app: Frid
     fun dateChanged(value: String) { saved["draftDate"] = value }
     fun removePhoto() { saved["draftPhoto"] = null }
     fun showSettings() { saved["route"] = "settings" }
+    fun showHome() { saved["route"] = "list" }
     fun showFood(id: String) { saved["selected"] = id; saved["route"] = "detail" }
     fun back() { saved["route"] = if (route.value == "form" && saved.get<String>("editingId") != null) "detail" else "list" }
 
@@ -95,7 +96,12 @@ class FridgeViewModel(private val saved: SavedStateHandle, private val app: Frid
     fun askedPermission(camera: Boolean, then: () -> Unit) = action { app.preferences.permissionAsked(camera); then() }
     fun resolve(operation: PendingOperation, keepLocal: Boolean) = action { app.repository.resolve(operation, keepLocal) }
     fun sync() { FridgeWork.sync(app); message("Synchronisation programmée. Android choisit le moment de l’envoi.") }
-    fun opened(source: String) { viewModelScope.launch { app.analytics.opened(source) } }
+    fun opened(source: String, id: String? = null) {
+        viewModelScope.launch {
+            val available = id?.let { app.repository.food(it)?.deleted == false } ?: false
+            app.analytics.opened(source, available)
+        }
+    }
 
     private fun action(block: suspend () -> Unit) {
         if (_busy.value) return

@@ -26,12 +26,14 @@ Le test de migration crée le schéma local v1, y insère un aliment, puis ouvre
 | Widget natif | Ajout sur le lanceur, aliment lu depuis Room, clic ouvrant le détail correspondant |
 | Réception de partage | Intent `ACTION_SEND text/plain` : le texte partagé préremplit le formulaire |
 | Photo | Capture réelle dans la caméra de l'émulateur, retour réussi et JPEG compressé présent dans les fichiers privés après correction |
+| Photo synchronisée | Aliment « Pommes » reçu par le serveur avec photo JPEG et version 1 |
+| Routage HTTPS | Intent explicite `/foods/<UUID>` ouvrant le bon détail ; cette vérification ne prouve pas l'association du domaine |
 
 ## Vérifications externes restant à terminer
 
 - **FCM** : ajouter le `google-services.json` personnel, installer la version Firebase, puis recevoir un message de test app en arrière-plan et vérifier son clic.
 - **Analytics** : après configuration Firebase et consentement, observer les trois événements dans DebugView. Le code de collecte est présent, mais un événement visible sur un vrai projet n'est pas encore vérifié.
-- **App Link verified** : publier l'entrée de signature fournie sur le domaine HTTPS, puis contrôler `pm get-app-links`. La déclaration du manifest et le routage ne suffisent pas à valider cette étape.
+- **App Link verified** : publier l'entrée de signature fournie sur le domaine HTTPS, puis contrôler `pm get-app-links`. L'état observé avant publication est `1024`, et non `verified`. La déclaration du manifest et le routage ne suffisent pas à valider cette étape.
 - **Release** : la clé release personnelle et une API HTTPS doivent être configurées avant une livraison release. La debug de démonstration est signée avec la clé debug locale ; elle n'est pas présentée comme une release.
 
 La checklist du TP n'est donc pas annoncée intégralement validée tant que les étapes externes ne sont pas exécutées.

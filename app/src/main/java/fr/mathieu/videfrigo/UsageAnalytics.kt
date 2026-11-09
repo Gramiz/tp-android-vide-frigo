@@ -26,12 +26,12 @@ class UsageAnalytics(context: Context, private val preferences: Preferences) {
         if (preferences.claimActivation()) sdk?.logEvent("first_food_added", null)
     }
 
-    suspend fun opened(source: String) {
+    suspend fun opened(source: String, available: Boolean) {
         if (sdk == null || !preferences.settings.first().analytics) return
         applyConsent(true)
         when (source) {
             "reminder" -> sdk?.logEvent("reminder_opened", null)
-            "widget" -> sdk?.logEvent("widget_food_opened", Bundle().apply { putString("result", "success") })
+            "widget" -> sdk?.logEvent("widget_food_opened", Bundle().apply { putString("result", if (available) "success" else "unavailable") })
         }
     }
 }

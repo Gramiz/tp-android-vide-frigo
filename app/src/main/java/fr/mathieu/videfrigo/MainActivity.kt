@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                 val uri = intent.data ?: return
                 if (uri.scheme != "https" || uri.host != BuildConfig.PWA_HOST) return
                 val id = uri.pathSegments.takeIf { it.size == 2 && it.first() == "foods" }?.get(1)
-                if (validId(id)) viewModel.showFood(id!!) else viewModel.back()
+                if (validId(id)) viewModel.showFood(id!!) else viewModel.showHome()
                 return
             }
         }
@@ -57,9 +57,9 @@ class MainActivity : ComponentActivity() {
             source == "widget_add" -> viewModel.add()
             validId(id) -> {
                 viewModel.showFood(id!!)
-                viewModel.opened(source)
+                viewModel.opened(source, id)
             }
-            source == "reminder" -> { viewModel.back(); viewModel.opened(source) }
+            source == "reminder" -> { viewModel.showHome(); viewModel.opened(source) }
         }
     }
 
