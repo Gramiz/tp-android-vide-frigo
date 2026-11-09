@@ -33,6 +33,7 @@ class FridgeWidget : AppWidgetProvider() {
                     val food = foods.getOrNull(index)
                     views.setTextViewText(viewId, food?.let { "${it.name} · ${FoodRules.dateLabel(it.date)}" } ?: "")
                     val intent = Intent(context, MainActivity::class.java).apply {
+                        action = "fr.mathieu.videfrigo.OPEN"
                         data = Uri.parse("videfrigo://widget/${food?.id.orEmpty()}")
                         putExtra("source", if (food == null) "widget_home" else "widget")
                         putExtra("foodId", food?.id)
@@ -41,6 +42,7 @@ class FridgeWidget : AppWidgetProvider() {
                     views.setOnClickPendingIntent(viewId, PendingIntent.getActivity(context, widgetId * 10 + index, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 }
                 val add = Intent(context, MainActivity::class.java).apply {
+                    action = "fr.mathieu.videfrigo.OPEN"
                     data = Uri.parse("videfrigo://add")
                     putExtra("source", "widget_add")
                     flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP

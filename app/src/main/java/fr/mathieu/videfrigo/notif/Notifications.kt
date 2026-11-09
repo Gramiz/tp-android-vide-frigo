@@ -36,6 +36,7 @@ object Notifications {
     private fun show(context: Context, id: Int, channel: String, title: String, body: String, foodId: String?, source: String) {
         if (!allowed(context)) return
         val intent = Intent(context, MainActivity::class.java).apply {
+            action = "fr.mathieu.videfrigo.OPEN"
             data = Uri.parse("videfrigo://$source/${foodId.orEmpty()}")
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra("foodId", foodId)

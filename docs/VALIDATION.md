@@ -30,6 +30,7 @@ Le test de migration crée le schéma local v1, y insère un aliment, puis ouvre
 | Routage HTTPS | Intent explicite `/foods/<UUID>` ouvrant le bon détail ; cette vérification ne prouve pas l'association du domaine |
 | Mise à jour de l'APK | Installation avec `adb install -r` de la nouvelle version ; les deux aliments et la photo restent présents |
 | Rappel local | Autorisation accordée, rappels activés ; notification « À consommer bientôt » affichée avec les deux aliments à vérifier |
+| Routage après mort du processus | Intent explicite avec les paramètres du PendingIntent de notification, après `am kill` : bon détail ouvert. Le test de réception FCM reste à faire |
 
 ## Vérifications externes restant à terminer
 

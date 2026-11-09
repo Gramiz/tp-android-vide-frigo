@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        Log.d("VideFrigo", "Activity créée ${System.identityHashCode(this)}")
+        Log.d("VideFrigo", "Activity créée ${System.identityHashCode(this)}, état restauré=${savedInstanceState != null}")
         if (savedInstanceState == null) handleIntent(intent)
         setContent { FridgeTheme { FridgeScreen(viewModel) } }
     }
@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
+        Log.d("VideFrigo", "Intent reçu : action=${intent.action}, origine=${intent.getStringExtra("source").orEmpty()}")
         when (intent.action) {
             Intent.ACTION_SEND -> if (intent.type == "text/plain") {
                 viewModel.add(intent.getStringExtra(Intent.EXTRA_TEXT).orEmpty())
