@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Vide-frigo</string>
+    <string name="widget_title">À consommer bientôt</string>
+    <string name="widget_description">Les trois prochaines dates limites de ton frigo.</string>
+    <string name="widget_empty">Ton frigo est vide</string>
+    <string name="widget_add">Ajouter un aliment</string>
+</resources>

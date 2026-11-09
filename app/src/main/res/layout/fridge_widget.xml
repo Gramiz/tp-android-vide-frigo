@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="16dp" android:background="@drawable/widget_background">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/widget_title" android:textStyle="bold" android:textSize="18sp" android:textColor="#203A2D" />
+    <TextView android:id="@+id/widget_summary" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/widget_empty" android:textColor="#425A4C" android:textSize="12sp" android:paddingBottom="4dp" />
+    <TextView android:id="@+id/widget_food_1" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:minHeight="48dp" android:gravity="center_vertical" android:maxLines="1" android:ellipsize="end" android:textColor="#203A2D" android:textSize="14sp" />
+    <TextView android:id="@+id/widget_food_2" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:minHeight="48dp" android:gravity="center_vertical" android:maxLines="1" android:ellipsize="end" android:textColor="#203A2D" android:textSize="14sp" />
+    <TextView android:id="@+id/widget_food_3" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:minHeight="48dp" android:gravity="center_vertical" android:maxLines="1" android:ellipsize="end" android:textColor="#203A2D" android:textSize="14sp" />
+    <Button android:id="@+id/widget_add" android:layout_width="match_parent" android:layout_height="48dp"
+        android:text="@string/widget_add" android:textAllCaps="false" android:textColor="#245E43" />
+</LinearLayout>

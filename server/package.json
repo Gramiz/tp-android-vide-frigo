@@ -1,0 +1,7 @@
+{
+  "name": "vide-frigo-api",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node server.mjs", "test": "node --test api.test.mjs" },
+  "engines": { "node": ">=22" }
+}
