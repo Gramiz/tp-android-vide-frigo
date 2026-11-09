@@ -2,6 +2,23 @@
 
 TP Android : gestion des aliments et de leurs dates limites, en Kotlin et Jetpack Compose. Vide-frigo sert d'idée fonctionnelle ; cette application est native et indépendante de Carnet et de la TWA.
 
+## Télécharger l'APK du TP
+
+- [Release GitHub v1.0.1](https://github.com/Gramiz/tp-android-vide-frigo/releases/tag/v1.0.1)
+- [Télécharger l'APK Vide-frigo 1.0.1](https://github.com/Gramiz/tp-android-vide-frigo/releases/download/v1.0.1/vide-frigo-1.0.1-debug.apk)
+
+Cet APK est la variante **debug de démonstration**, signée et installable sur Android 8/API 26 minimum. Il contient la configuration Firebase utilisée pour le TP. La synchronisation nécessite de lancer le serveur Node fourni et le tunnel ADB décrits ci-dessous ; la gestion locale du frigo reste disponible sans serveur. Après téléchargement :
+
+```bash
+adb install -r vide-frigo-1.0.1-debug.apk
+```
+
+La release GitHub est le point de distribution de l'APK. La procédure de signature d'une variante Android release est décrite en fin de README.
+
+### Vidéo de démonstration
+
+La consigne demande une courte vidéo **si aucune démonstration n'est faite lors du TP**. Aucune vidéo n'est jointe actuellement : la démonstration en direct est préparée selon le scénario ci-dessous. Si elle n'a pas lieu, ajouter ici le lien d'une courte vidéo avant le rendu final.
+
 ## Construire et lancer
 
 Prérequis : Android Studio compatible AGP 9.4.1, JDK 21, SDK Android 37, téléphone ou émulateur Android 8/API 26 minimum. Pour FCM, utiliser un appareil avec les services Google Play.
