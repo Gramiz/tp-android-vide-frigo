@@ -92,7 +92,10 @@ class FridgeViewModel(private val saved: SavedStateHandle, private val app: Frid
         app.analytics.applyConsent(allowed)
         app.preferences.setConsent(allowed)
     }
-    fun setReminders(allowed: Boolean) = action { app.preferences.setReminders(allowed) }
+    fun setReminders(allowed: Boolean) = action {
+        app.preferences.setReminders(allowed)
+        if (allowed) FridgeWork.checkReminders(app)
+    }
     fun askedPermission(camera: Boolean, then: () -> Unit) = action { app.preferences.permissionAsked(camera); then() }
     fun resolve(operation: PendingOperation, keepLocal: Boolean) = action { app.repository.resolve(operation, keepLocal) }
     fun sync() { FridgeWork.sync(app); message("Synchronisation programmée. Android choisit le moment de l’envoi.") }

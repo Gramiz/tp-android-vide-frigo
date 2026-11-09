@@ -28,6 +28,8 @@ Le test de migration crée le schéma local v1, y insère un aliment, puis ouvre
 | Photo | Capture réelle dans la caméra de l'émulateur, retour réussi et JPEG compressé présent dans les fichiers privés après correction |
 | Photo synchronisée | Aliment « Pommes » reçu par le serveur avec photo JPEG et version 1 |
 | Routage HTTPS | Intent explicite `/foods/<UUID>` ouvrant le bon détail ; cette vérification ne prouve pas l'association du domaine |
+| Mise à jour de l'APK | Installation avec `adb install -r` de la nouvelle version ; les deux aliments et la photo restent présents |
+| Rappel local | Autorisation accordée, rappels activés ; notification « À consommer bientôt » affichée avec les deux aliments à vérifier |
 
 ## Vérifications externes restant à terminer
 

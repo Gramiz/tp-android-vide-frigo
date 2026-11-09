@@ -28,6 +28,10 @@ object FridgeWork {
         WorkManager.getInstance(context).enqueueUniquePeriodicWork("fridge-maintenance", ExistingPeriodicWorkPolicy.KEEP,
             PeriodicWorkRequestBuilder<MaintenanceWorker>(1, TimeUnit.HOURS).build())
     }
+    fun checkReminders(context: Context) {
+        WorkManager.getInstance(context).enqueueUniqueWork("fridge-reminder-check", ExistingWorkPolicy.KEEP,
+            OneTimeWorkRequestBuilder<MaintenanceWorker>().build())
+    }
 }
 
 class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
