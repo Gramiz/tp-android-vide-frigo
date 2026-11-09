@@ -26,6 +26,16 @@ class UsageAnalytics(context: Context, private val preferences: Preferences) {
         if (preferences.claimActivation()) sdk?.logEvent("first_food_added", null)
     }
 
+    suspend fun screenViewed(name: String): Boolean {
+        if (sdk == null || !preferences.settings.first().analytics) return false
+        applyConsent(true)
+        sdk?.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, Bundle().apply {
+            putString(FirebaseAnalytics.Param.SCREEN_NAME, name)
+            putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
+        })
+        return true
+    }
+
     suspend fun opened(source: String, available: Boolean) {
         if (sdk == null || !preferences.settings.first().analytics) return
         applyConsent(true)

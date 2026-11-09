@@ -11,6 +11,7 @@ Vérifications réalisées le 9 novembre 2026 sur l'émulateur Medium Phone API 
 | `./gradlew lintDebug` | Réussi, aucune erreur ; avertissements de versions et de compatibilité documentés par le rapport Lint |
 | `./gradlew connectedDebugAndroidTest` | 3 tests réussis : migration v1→v2, persistance et outbox après perte de confirmation |
 | `cd server && npm test` | 5 tests réussis : persistance/isolation, rejeu, conflit concurrent, suppression, validation |
+| Tests instrumentés `AnalyticsManifestTest` sur l'APK installé | 2 tests réussis : absence de permissions publicitaires, collecte et suivi automatique désactivés par défaut |
 
 Le test de migration crée le schéma local v1, y insère un aliment, puis ouvre cette même base avec Room v2 et la migration. Il vérifie l'aliment conservé et la table d'outbox utilisable.
 
@@ -34,9 +35,12 @@ Le test de migration crée le schéma local v1, y insère un aliment, puis ouvre
 
 ## Vérifications externes restant à terminer
 
+Le suivi manuel des quatre écrans Compose est implémenté avec des noms stables (`fridge_list`, `food_form`, `food_detail`, `settings`) et le suivi automatique est désactivé. Les permissions publicitaires ont été retirées explicitement du manifest fusionné. Compilation, tests unitaires et Lint repassés après ces modifications. La validation en direct dépend encore de Firebase.
+
 - **FCM** : ajouter le `google-services.json` personnel, installer la version Firebase, puis recevoir un message de test app en arrière-plan et vérifier son clic.
 - **Analytics** : après configuration Firebase et consentement, observer les trois événements dans DebugView. Le code de collecte est présent, mais un événement visible sur un vrai projet n'est pas encore vérifié.
 - **App Link verified** : publier l'entrée de signature fournie sur le domaine HTTPS, puis contrôler `pm get-app-links`. L'état observé avant publication est `1024`, et non `verified`. La déclaration du manifest et le routage ne suffisent pas à valider cette étape.
+  Le tableau complet à publier est dans `docs/assetlinks.json`. La création d'un brouillon Netlify a été refusée par la revue automatique d'autorisation ; aucun déploiement n'a été créé. Voir `APP-LINK-DEPLOIEMENT.md` pour le changement précis en attente d'accord.
 - **Release** : la clé release personnelle et une API HTTPS doivent être configurées avant une livraison release. La debug de démonstration est signée avec la clé debug locale ; elle n'est pas présentée comme une release.
 
 La checklist du TP n'est donc pas annoncée intégralement validée tant que les étapes externes ne sont pas exécutées.

@@ -33,6 +33,8 @@ class FridgeViewModel(private val saved: SavedStateHandle, private val app: Frid
     val busy = _busy.asStateFlow()
     private val _messages = MutableSharedFlow<String>(extraBufferCapacity = 4)
     val messages = _messages.asSharedFlow()
+    // En mémoire dans le ViewModel : une rotation ne recompte pas le même écran.
+    private var lastScreenKey: String? = null
     var capturePath: String?
         get() = saved["capturePath"]
         set(value) { saved["capturePath"] = value }
@@ -40,6 +42,24 @@ class FridgeViewModel(private val saved: SavedStateHandle, private val app: Frid
     init { FridgeWork.sync(app) }
 
     fun message(text: String) { _messages.tryEmit(text) }
+    fun screenVisible(currentRoute: String, foodId: String, consent: Boolean) {
+        if (!consent) { lastScreenKey = null; return }
+        // Noms stables et explicites, indépendants des noms de classes/R8.
+        val name = when (currentRoute) {
+            "list" -> "fridge_list"
+            "form" -> "food_form"
+            "detail" -> "food_detail"
+            "settings" -> "settings"
+            else -> return
+        }
+        // L'identifiant différencie deux fiches localement ; il n'est jamais envoyé.
+        val key = if (currentRoute == "detail") "$name:$foodId" else name
+        if (lastScreenKey == key) return
+        lastScreenKey = key
+        viewModelScope.launch {
+            if (!app.analytics.screenViewed(name) && lastScreenKey == key) lastScreenKey = null
+        }
+    }
     fun nameChanged(value: String) { saved["draftName"] = value }
     fun dateChanged(value: String) { saved["draftDate"] = value }
     fun removePhoto() { saved["draftPhoto"] = null }

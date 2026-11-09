@@ -55,6 +55,9 @@ fun FridgeScreen(vm: FridgeViewModel) {
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
     LaunchedEffect(vm) { vm.messages.collect { snackbar.showSnackbar(it) } }
+    LaunchedEffect(route, selected, state.settings.analytics) {
+        vm.screenVisible(route, selected, state.settings.analytics)
+    }
     BackHandler(route != "list") { vm.back() }
     val food = state.foods.find { it.id == selected }
     var deleteId by rememberSaveable { mutableStateOf<String?>(null) }

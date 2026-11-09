@@ -38,11 +38,25 @@ Dans Firebase Console → Analytics → DebugView, vérifier :
 
 Le premier événement n'est envoyé qu'une fois par installation après consentement. Aucun événement d'avant le consentement n'est rejoué. Pour recommencer ce test, utiliser une installation de test distincte ; effacer les données supprimerait aussi le frigo.
 
+Les écrans Compose sont suivis manuellement avec `screen_view`, en plus des trois événements métier :
+
+| Écran | `screen_name` |
+|---|---|
+| Liste du frigo | `fridge_list` |
+| Ajout/modification | `food_form` |
+| Détail d'un aliment | `food_detail` |
+| Réglages | `settings` |
+
+Le suivi automatique des Activity est désactivé pour éviter les doublons. Une rotation ne recompte pas l'écran conservé par le ViewModel. Après acceptation du consentement, l'écran actuellement affiché peut être mesuré ; les visites précédentes ne sont pas rejouées. Aucun identifiant d'aliment n'est envoyé dans `screen_view`.
+
+Avant de consentir, vérifier dans DebugView qu'aucun événement n'est envoyé. Après acceptation, parcourir les quatre écrans et vérifier leurs noms. Retirer ensuite le consentement et vérifier l'arrêt de la collecte pour les nouvelles actions.
+
 ```bash
 adb shell setprop debug.firebase.analytics.app .none.
 ```
 
 La collecte est désactivée par défaut dans le manifest. Le consentement est mémorisé dans DataStore et peut être retiré. Les trois événements ne contiennent ni photo, ni nom, ni identifiant d'aliment, ni jeton d'installation. Les identifiants techniques éventuellement utilisés par le SDK relèvent de Firebase Analytics.
+Les permissions publicitaires `AD_ID` et `ACCESS_ADSERVICES_*` sont explicitement retirées du manifest fusionné, et leur absence est vérifiée dans l'APK par un test instrumenté.
 
 ## Association du domaine
 
