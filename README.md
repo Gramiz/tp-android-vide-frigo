@@ -17,7 +17,9 @@ La release GitHub est le point de distribution de l'APK. La procédure de signat
 
 ### Vidéo de démonstration
 
-La consigne demande une courte vidéo **si aucune démonstration n'est faite lors du TP**. Aucune vidéo n'est jointe actuellement : la démonstration en direct est préparée selon le scénario ci-dessous. Si elle n'a pas lieu, ajouter ici le lien d'une courte vidéo avant le rendu final.
+[Regarder la vidéo de démonstration — 1 min 29 s](docs/Vide-frigo-demo.mp4).
+
+La vidéo présente la fiche d'un aliment, l'ajout hors ligne, la synchronisation, le widget, la réception d'une notification Firebase et le partage avec ouverture du lien vers l'aliment.
 
 ## Construire et lancer
 
